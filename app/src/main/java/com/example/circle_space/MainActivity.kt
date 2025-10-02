@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,6 +24,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PostAdd
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -115,7 +118,109 @@ fun MainLayout(navController: NavHostController) {
             composable("notification") {
                 NotificationScreen(navController)
             }
+            composable("about_me") {
+                AboutMeScreen()
+             }
+            composable("saved_posts") {
+                SavedPostsScreen()
+             }
+            composable("groups") {
+                GroupsScreen()
+             }
+            composable("campaign") {
+                CampaignScreen()
+             }
+            composable("settings") {
+                SettingsScreen()
+             }
+
+
+ }
+    }
+}
+
+@Composable
+fun SettingsScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "Settings Icon",
+                tint = Color.Black,
+                modifier = Modifier.size(28.dp)
+            )
+            Spacer(Modifier.width(8.dp))
+            Text("Settings", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
         }
+
+        Spacer(Modifier.height(16.dp))
+        Text("Customize your preferences and account settings here.", style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+@Composable
+fun CampaignScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Campaign", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
+        Spacer(Modifier.height(12.dp))
+        Text("Your campaigns and promotions will show up here.", style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+@Composable
+fun GroupsScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Groups", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
+        Spacer(Modifier.height(12.dp))
+        Text("Explore and manage your groups here.", style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+@Composable
+fun SavedPostsScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Saved Posts", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
+        Spacer(Modifier.height(12.dp))
+        Text("Your saved posts will be listed here.", style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+@Composable
+fun AboutMeScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("About Me", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
+        Spacer(Modifier.height(12.dp))
+        Text("This is where your bio and personal info will appear.", style = MaterialTheme.typography.bodyMedium)
     }
 }
 
