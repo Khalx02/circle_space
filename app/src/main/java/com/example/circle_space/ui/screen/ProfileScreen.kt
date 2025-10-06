@@ -2,10 +2,10 @@ package com.example.circle_space.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -50,19 +50,22 @@ val profileSections = listOf(
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    Column(
+    Box(
         modifier = Modifier
-            .fillMaxSize()
+            .width(280.dp)              // Covers part of the horizontal space
+            .height(500.dp)             // Covers from top to part of bottom
             .background(Color.White)
             .padding(16.dp)
     ) {
-        Text("Profile", style = MaterialTheme.typography.headlineSmall, color = Color.Black)
+        Column {
+            Text("Profile", style = MaterialTheme.typography.headlineSmall, color = Color.Black)
 
-        Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
-        LazyColumn {
-            items(profileSections) { section ->
-                ProfileItem(section = section, navController = navController)
+            LazyColumn {
+                items(profileSections) { section ->
+                    ProfileItem(section = section, navController = navController)
+                }
             }
         }
     }

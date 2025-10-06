@@ -3,8 +3,11 @@ package com.example.circle_space
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,10 +17,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Campaign
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
@@ -26,14 +33,21 @@ import androidx.compose.material.icons.filled.PostAdd
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -50,10 +64,11 @@ import com.example.circle_space.ui.screen.LoginScreen
 import com.example.circle_space.ui.screen.NotificationScreen
 import com.example.circle_space.ui.screen.PitchScreen
 import com.example.circle_space.ui.screen.PostScreen
-import com.example.circle_space.ui.screen.ProfileScreen
+import com.example.circle_space.ui.screen.ProfileItem
 import com.example.circle_space.ui.screen.RegisterScreen
 import com.example.circle_space.ui.screen.SearchScreen
 import com.example.circle_space.ui.screen.ServiceScreen
+import com.example.circle_space.ui.screen.profileSections
 import com.example.circle_space.ui.theme.Circle_spaceTheme
 
 class MainActivity : ComponentActivity() {
@@ -94,9 +109,43 @@ fun MainLayout(navController: NavHostController) {
             composable("home") {
                 HomeScreen(navController)
             }
-            composable("profile") {
-                ProfileScreen(navController)
-            }
+     composable("profile") {
+         var showProfile by remember { mutableStateOf(true) }
+
+         Box(modifier = Modifier.fillMaxSize()) {
+             HomeScreen(navController) // Always visible
+
+             if (showProfile) {
+                 // Profile panel
+                 Box(
+                     modifier = Modifier
+                         .width(280.dp)
+                         .height(500.dp)
+                         .background(Color(0xFFF5F3F0)) // ✅ Your custom color
+                         .padding(16.dp)
+                         .align(Alignment.TopStart)
+                 ) {
+                     Column {
+                         Text("Profile", style = MaterialTheme.typography.headlineSmall, color = Color.Black)
+                         Spacer(Modifier.height(16.dp))
+                         LazyColumn {
+                             items(profileSections) { section ->
+                                 ProfileItem(section = section, navController = navController)
+                             }
+                         }
+                     }
+                 }
+
+                 // ✅ Dismiss layer: only covers the rest of the screen
+                 Box(
+                     modifier = Modifier
+                         .fillMaxSize()
+                         .clickable { showProfile = false }
+                         .padding(start = 280.dp, top = 500.dp) // ✅ restrict to area outside profile
+                 )
+             }
+         }
+     }
             composable("inbox") {
                 InboxScreen(navController)
             }
@@ -211,6 +260,9 @@ fun SavedPostsScreen() {
 
 @Composable
 fun AboutMeScreen() {
+    var isEditing by remember { mutableStateOf(false) }
+    var aboutText by remember { mutableStateOf("This is where your bio and personal info will appear.") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -218,9 +270,55 @@ fun AboutMeScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("About Me", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "About Me",
+                style = MaterialTheme.typography.headlineMedium,
+                color = Color.Black
+            )
+
+            IconButton(onClick = { isEditing = !isEditing }) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit About Me",
+                    tint = Color.Gray
+                )
+            }
+        }
+
         Spacer(Modifier.height(12.dp))
-        Text("This is where your bio and personal info will appear.", style = MaterialTheme.typography.bodyMedium)
+
+        if (isEditing) {
+            TextField(
+                value = aboutText,
+                onValueChange = { aboutText = it },
+                placeholder = { Text("Write something about yourself...") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White),
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+        } else {
+            Text(
+                text = aboutText,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.DarkGray
+            )
+        }
     }
 }
 
