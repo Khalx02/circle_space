@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,27 +18,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Campaign
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PostAdd
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,7 +40,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -57,7 +49,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.circle_space.ui.screen.AboutMeScreen
+import com.example.circle_space.ui.screen.CampaignScreen
 import com.example.circle_space.ui.screen.CircleScreen
+import com.example.circle_space.ui.screen.GroupsScreen
 import com.example.circle_space.ui.screen.HomeScreen
 import com.example.circle_space.ui.screen.InboxScreen
 import com.example.circle_space.ui.screen.LoginScreen
@@ -66,8 +61,10 @@ import com.example.circle_space.ui.screen.PitchScreen
 import com.example.circle_space.ui.screen.PostScreen
 import com.example.circle_space.ui.screen.ProfileItem
 import com.example.circle_space.ui.screen.RegisterScreen
+import com.example.circle_space.ui.screen.SavedPostsScreen
 import com.example.circle_space.ui.screen.SearchScreen
 import com.example.circle_space.ui.screen.ServiceScreen
+import com.example.circle_space.ui.screen.SettingsScreen
 import com.example.circle_space.ui.screen.profileSections
 import com.example.circle_space.ui.theme.Circle_spaceTheme
 
@@ -188,139 +185,7 @@ fun MainLayout(navController: NavHostController) {
     }
 }
 
-@Composable
-fun SettingsScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Settings Icon",
-                tint = Color.Black,
-                modifier = Modifier.size(28.dp)
-            )
-            Spacer(Modifier.width(8.dp))
-            Text("Settings", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
-        }
 
-        Spacer(Modifier.height(16.dp))
-        Text("Customize your preferences and account settings here.", style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-@Composable
-fun CampaignScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Campaign", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
-        Spacer(Modifier.height(12.dp))
-        Text("Your campaigns and promotions will show up here.", style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-@Composable
-fun GroupsScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Groups", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
-        Spacer(Modifier.height(12.dp))
-        Text("Explore and manage your groups here.", style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-@Composable
-fun SavedPostsScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Saved Posts", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
-        Spacer(Modifier.height(12.dp))
-        Text("Your saved posts will be listed here.", style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-@Composable
-fun AboutMeScreen() {
-    var isEditing by remember { mutableStateOf(false) }
-    var aboutText by remember { mutableStateOf("This is where your bio and personal info will appear.") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "About Me",
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color.Black
-            )
-
-            IconButton(onClick = { isEditing = !isEditing }) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit About Me",
-                    tint = Color.Gray
-                )
-            }
-        }
-
-        Spacer(Modifier.height(12.dp))
-
-        if (isEditing) {
-            TextField(
-                value = aboutText,
-                onValueChange = { aboutText = it },
-                placeholder = { Text("Write something about yourself...") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.Black,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                )
-            )
-        } else {
-            Text(
-                text = aboutText,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.DarkGray
-            )
-        }
-    }
-}
 
 @Composable
 fun BottomBar(navController: NavController) {
